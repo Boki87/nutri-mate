@@ -27,13 +27,7 @@ const AppNavLink = ({ children, to }: { to: string; children: ReactNode }) => {
   return (
     <NavLink
       to={to}
-      className={({
-        isActive,
-        isPending,
-      }: {
-        isActive: boolean;
-        isPending: boolean;
-      }) => {
+      className={({ isActive }: { isActive: boolean; isPending: boolean }) => {
         if (isActive) {
           return "p-3 text-emerald-500 font-bold text-xl";
         }
