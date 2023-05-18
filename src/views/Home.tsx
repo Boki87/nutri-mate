@@ -13,6 +13,7 @@ import { PostgrestSingleResponse } from "@supabase/supabase-js";
 import { MacroCounter } from "../components/MacroCounter";
 import { AnimatedCounter } from "../components/shared/AnimatedCounter";
 import { DatePickerWrapper } from "../components/DatePickerWrapper";
+import { motion } from "framer-motion";
 
 export const Home = () => {
   const { loadingFoods } = useAppSelector((state) => state.data);

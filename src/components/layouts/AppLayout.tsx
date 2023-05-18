@@ -7,6 +7,7 @@ import { Login } from "../../views/Login";
 import { supabase } from "../../api/supabaseClient";
 import { AppNav } from "../AppNav";
 import { formatDateForQuery } from "../../utils";
+import { motion } from "framer-motion";
 
 export const AppLayout = (): ReactElement => {
   const dispatch = useAppDispatch();

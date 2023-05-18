@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html, body {
-    @apply w-full h-screen
+    @apply w-full h-full
 }
 
 #root {

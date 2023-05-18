@@ -7,8 +7,8 @@ import { addFood } from "../../features/data/dataSlice";
 import { closeFoodModal } from "../../features/modals/modalsSlice";
 import { motion } from "framer-motion";
 import { Input } from "../shared/Input";
-import { MdOutlineLiveTv } from "react-icons/md";
 import { FaChevronLeft } from "react-icons/fa";
+import { CgSpinnerTwo } from "react-icons/cg";
 
 export const FoodModalForm = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +20,8 @@ export const FoodModalForm = () => {
     foodToAdd?.serving_size_g || 1
   );
   const [servings, setServings] = useState(foodToAdd?.servings || 1);
+
+  const [isAdding, setIsAdding] = useState(false);
 
   function closeForm() {
     setShowForm(false);
@@ -47,6 +49,7 @@ export const FoodModalForm = () => {
     e.preventDefault();
     if (!food) return;
     let { order_id, ...foodToAddClean } = food;
+    setIsAdding(true);
     try {
       const { data, error } = await supabase
         .from("food")
@@ -64,8 +67,10 @@ export const FoodModalForm = () => {
       dispatch(closeFoodModal());
       setShowForm(false);
       setFoodToAdd(null);
+      setIsAdding(false);
     } catch (e) {
       console.log(e);
+      setIsAdding(false);
     }
   }
 
@@ -104,8 +109,8 @@ export const FoodModalForm = () => {
       <div className="text-center font-bold text-lg text-gray-800 uppercase">
         Add food
       </div>
-      <form onSubmit={submitFormHandler} className="flex-1 flex flex-col">
-        <div className="mb-3">
+      <form onSubmit={submitFormHandler} className="flex-1 flex flex-col pb-2">
+        <div className="mb-2">
           <label className="text-gray-700 font-bold capitalize" htmlFor="name">
             Name
           </label>
@@ -118,7 +123,7 @@ export const FoodModalForm = () => {
             onChange={updatePropHandler}
           />
         </div>
-        <div className="mb-3">
+        <div className="mb-2">
           <label
             className="text-gray-700 font-bold capitalize"
             htmlFor="protein"
@@ -137,7 +142,7 @@ export const FoodModalForm = () => {
             onChange={updatePropHandler}
           />
         </div>
-        <div className="mb-3">
+        <div className="mb-2">
           <label className="text-gray-700 font-bold capitalize" htmlFor="carbs">
             carbs
           </label>
@@ -152,7 +157,7 @@ export const FoodModalForm = () => {
             onChange={updatePropHandler}
           />
         </div>
-        <div className="mb-3">
+        <div className="mb-2">
           <label className="text-gray-700 font-bold capitalize" htmlFor="fats">
             fats
           </label>
@@ -168,14 +173,14 @@ export const FoodModalForm = () => {
             onChange={updatePropHandler}
           />
         </div>
-        <div className="mb-3">
+        <div className="mb-2">
           <label className="text-gray-700 font-bold capitalize" htmlFor="fats">
             calories
           </label>
           <Input
             required
             rightIcon={
-              <span className="italic text-gray-700 font-bold">g</span>
+              <span className="italic text-gray-700 font-bold">kcal</span>
             }
             type="number"
             value={food?.calories}
@@ -184,7 +189,7 @@ export const FoodModalForm = () => {
             onChange={updatePropHandler}
           />
         </div>
-        <div className="mb-3">
+        <div className="mb-2">
           <label
             className="text-gray-700 font-bold capitalize"
             htmlFor="serving_size_g"
@@ -206,7 +211,7 @@ export const FoodModalForm = () => {
             }}
           />
         </div>
-        <div className="mb-3">
+        <div className="mb-2">
           <label
             className="text-gray-700 font-bold capitalize"
             htmlFor="servings"
@@ -223,10 +228,15 @@ export const FoodModalForm = () => {
           />
         </div>
         <button
+          disabled={isAdding}
           type="submit"
-          className="h-10 px-4 bg-emerald-400 hover:bg-emerald-500 active:bg-emerald-600 rounded-xl text-white font-bold"
+          className="h-10 px-4 bg-emerald-400 hover:bg-emerald-500 active:bg-emerald-600 rounded-xl text-white font-bold flex items-center justify-center disabled:bg-slate-300 disabled:pointer-events-none"
         >
-          ADD
+          {isAdding ? (
+            <CgSpinnerTwo className="animate-spin text-xl" />
+          ) : (
+            <span>ADD</span>
+          )}
         </button>
         <div className="flex-1"></div>
         <div className="flex items-center py-4 justify-center space-x-2">

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
 import { getMacrosForCategory } from "../features/data/dataSlice";
 import { FoodCategoryCard } from "../components/FoodCategoryCard";
+import { motion } from "framer-motion";
 
 export const FoodPage = () => {
   const { categories, foods, loadingFoods } = useAppSelector(
@@ -11,7 +12,13 @@ export const FoodPage = () => {
 
   return (
     <DatePickerWrapper>
-      <div className="p-5">
+      <motion.div
+        key={"food"}
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 100, opacity: 0 }}
+        className="p-5"
+      >
         {loadingFoods && (
           <>
             <LoadingSkeletonLg />
@@ -43,7 +50,7 @@ export const FoodPage = () => {
               </Link>
             );
           })}
-      </div>
+      </motion.div>
     </DatePickerWrapper>
   );
 };

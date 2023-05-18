@@ -3,6 +3,7 @@ import {
   RouterProvider,
   createBrowserRouter,
   createRoutesFromElements,
+  useLocation,
 } from "react-router-dom";
 import { AppLayout } from "./components/layouts/AppLayout";
 import { Home } from "./views/Home";
@@ -10,6 +11,7 @@ import { FoodPage } from "./views/FoodPage";
 import { MealsPage } from "./views/MealsPage";
 import { ProfilePage } from "./views/ProfilePage";
 import { FoodCategoryPage } from "./views/FoodCategoryPage";
+import { AnimatePresence } from "framer-motion";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
