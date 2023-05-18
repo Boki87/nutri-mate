@@ -1,4 +1,4 @@
-export function classMerge(arr: string[]) {
+export function classMerge(...arr: string[]) {
   return arr.join(" ");
 }
 

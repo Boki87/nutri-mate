@@ -7,6 +7,7 @@ import { openConfirm } from "../features/modals/modalsSlice";
 import { supabase } from "../api/supabaseClient";
 import { deleteFood } from "../features/data/dataSlice";
 import { openFoodModal } from "../features/modals/modalsSlice";
+import { NewFoodButton } from "../components/NewFoodButton";
 
 export const FoodCategoryPage = () => {
   const dispatch = useAppDispatch();
@@ -82,12 +83,13 @@ export const FoodCategoryPage = () => {
           )}
         </div>
       </div>
-      <button
+      {/* <button
         onClick={() => dispatch(openFoodModal(parseInt(categoryId)))}
         className="absolute bottom-14 right-4 rounded-full w-14 h-14 bg-emerald-500 text-white flex items-center justify-center hover:bg-emerald-600 active:bg-emerald-700"
       >
         <FaPlus />
-      </button>
+      </button> */}
+      <NewFoodButton className="absolute bottom-14 right-4" />
     </DatePickerWrapper>
   );
 };
