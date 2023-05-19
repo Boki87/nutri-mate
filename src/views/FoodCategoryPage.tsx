@@ -89,7 +89,10 @@ export const FoodCategoryPage = () => {
       >
         <FaPlus />
       </button> */}
-      <NewFoodButton className="absolute bottom-14 right-4" />
+      <NewFoodButton
+        onAddFood={() => dispatch(openFoodModal(parseInt(categoryId)))}
+        className="absolute bottom-14 right-4"
+      />
     </DatePickerWrapper>
   );
 };
