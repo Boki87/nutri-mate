@@ -1,8 +1,10 @@
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { classMerge } from "../utils";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useOutsideClick } from "../hooks/useOutsideClick";
+import { MdSetMeal } from "react-icons/md";
+import { GiKnifeFork } from "react-icons/gi";
+import { IoFastFoodSharp } from "react-icons/io5";
 
 interface INewFoodButton {
   onAddFood?: () => void;
@@ -15,17 +17,13 @@ export const NewFoodButton = ({
   onAddMeal,
   ...rest
 }: INewFoodButton) => {
-  const parentRef = useRef<HTMLDivElement>(null);
-  const [showOptions, setShowOption] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
 
-  useOutsideClick(parentRef, () => {
-    setShowOption(false);
-  });
   return (
-    <div ref={parentRef} className={classMerge("w-14 h-14", rest.className)}>
+    <div className={classMerge("w-14 h-14", rest.className)}>
       <div className="relative w-full h-full">
         <button
-          onClick={() => setShowOption(!showOptions)}
+          onClick={() => setShowOptions(!showOptions)}
           className="rounded-full w-14 h-14 bg-emerald-500 text-white flex items-center justify-center hover:bg-emerald-600 active:bg-emerald-700 z-10"
         >
           {showOptions ? <FaMinus /> : <FaPlus />}
@@ -34,21 +32,29 @@ export const NewFoodButton = ({
           {showOptions && (
             <>
               <motion.button
+                onClick={() => {
+                  setShowOptions(false);
+                  onAddMeal && onAddMeal();
+                }}
                 animate={{ bottom: 120, opacity: 1 }}
                 exit={{ bottom: 0, opacity: 0 }}
                 style={{ right: "0px" }}
                 transition={{ delay: showOptions ? 0.2 : 0 }}
-                className="absolute rounded-full w-14 h-14 bg-blue-500 text-white flex items-center justify-center hover:bg-blue-600 active:bg-blue-700 z-0"
+                className="absolute rounded-full w-14 h-14 bg-blue-300 text-white flex items-center justify-center hover:bg-blue-400 active:bg-blue-500 z-0"
               >
-                <FaPlus />
+                <GiKnifeFork />
               </motion.button>
               <motion.button
+                onClick={() => {
+                  setShowOptions(false);
+                  onAddFood && onAddFood();
+                }}
                 animate={{ bottom: 60, opacity: 1 }}
                 exit={{ bottom: 0, opacity: 0 }}
                 style={{ right: "0px" }}
-                className="absolute rounded-full w-14 h-14 bg-orange-500 text-white flex items-center justify-center hover:bg-orange-600 active:bg-orange-700 z-0"
+                className="absolute rounded-full w-14 h-14 bg-orange-300 text-white flex items-center justify-center hover:bg-orange-400 active:bg-orange-500 z-0"
               >
-                <FaPlus />
+                <IoFastFoodSharp />
               </motion.button>
             </>
           )}
