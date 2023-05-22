@@ -5,19 +5,18 @@ import {
   setDatePickerWeekIndex,
   setSelectedDate,
 } from "../features/data/dataSlice";
-import { ReactNode } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { ReactNode, useMemo } from "react";
 
 interface IDatePickerWrapper {
   children: ReactNode;
 }
 
 export const DatePickerWrapper = ({ children }: IDatePickerWrapper) => {
-  const location = useLocation();
   const dispatch = useAppDispatch();
   const { selectedDate, datePickerWeekIndex } = useAppSelector(
     (state) => state.data
   );
+
   function handleDateChange(d: number) {
     dispatch(setSelectedDate(d));
   }
