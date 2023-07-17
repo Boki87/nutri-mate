@@ -22,6 +22,7 @@ export const FoodModalSearch = () => {
 
   const [search, setSearch] = useState("");
   const [searchRes, setSearchRes] = useState<Food[]>([]);
+  const [searchResHistory, setSearchResHistory] = useState<Food[]>([]);
   const [loadingSearch, setLoadingSearch] = useState(false);
 
   const [historyResults, setHistoryResults] = useState<Food[]>([]);
@@ -117,9 +118,21 @@ export const FoodModalSearch = () => {
     async () => {
       if (search === "") return;
       setLoadingSearch(true);
-      const res = await nutritionApiCall(search);
-      setSearchRes(res);
-      setLoadingSearch(false);
+      try {
+        const res = await nutritionApiCall(search);
+        const { data, error } = await supabase
+          .from("food_history")
+          .select()
+          .textSearch("name", `${search}`);
+        if (error) throw Error(error.message);
+        //@ts-ignore
+        setSearchResHistory(data);
+        setSearchRes(res);
+        setLoadingSearch(false);
+      } catch (e) {
+        console.log(e);
+        setLoadingSearch(false);
+      }
     },
     1000,
     [search]
@@ -189,12 +202,21 @@ export const FoodModalSearch = () => {
               <FoodCard
                 onClick={() => addFood(food)}
                 foodData={food}
-                key={food.name}
+                key={food.id + "_search"}
               />
             ))}
-          {!loadingSearch && searchRes.length == 0 && (
-            <span>No results found</span>
-          )}
+          {searchResHistory.length > 0 ? <span>From History</span> : null}
+          {!loadingSearch &&
+            searchResHistory.map((food) => (
+              <FoodCard
+                onClick={() => addFood(food)}
+                foodData={food}
+                key={food.id + "_history"}
+              />
+            ))}
+          {!loadingSearch &&
+            searchRes.length === 0 &&
+            searchResHistory.length === 0 && <span>No results found</span>}
         </div>
       )}
       <div className="flex space-x-2 items-center justify-center py-4">

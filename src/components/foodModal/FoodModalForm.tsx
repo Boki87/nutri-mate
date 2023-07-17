@@ -53,7 +53,9 @@ export const FoodModalForm = () => {
     try {
       const { data, error } = await supabase
         .from("food")
-        .insert([foodToAddClean])
+        .insert([
+          { ...foodToAddClean, name: foodToAddClean.name.toLowerCase() },
+        ])
         .select()
         .single();
 
@@ -61,7 +63,9 @@ export const FoodModalForm = () => {
 
       const { data: historyData, error: historyError } = await supabase
         .from("food_history")
-        .insert([foodToAddClean]);
+        .insert([
+          { ...foodToAddClean, name: foodToAddClean.name.toLowerCase() },
+        ]);
       if (historyError) throw Error(historyError.message);
       dispatch(addFood(data as Food));
       dispatch(closeFoodModal());
